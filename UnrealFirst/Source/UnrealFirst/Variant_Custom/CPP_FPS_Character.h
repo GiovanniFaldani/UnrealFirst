@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "CPP_FPS_Character.generated.h"
 
+class UCPP_FPS_InteractionComponent;
+
 UCLASS()
 class UNREALFIRST_API ACPP_FPS_Character : public ACharacter
 {
@@ -15,35 +17,16 @@ public:
 	// Sets default values for this character's properties
 	ACPP_FPS_Character();
 
-	//** Trace Interaction Distance
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "FPS_Character")
-	float DistanceInteraction{ 1500.f };
-
-	//** Trace Interaction Radius
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "FPS_Character")
-	float RadiusInteraction{ 400.f };
-
-	//** Objects types
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "FPS_Character")
-	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypesToInteract;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "FPS_Character")
-	bool bDebugInteraction{ false };
-
 	//** Character Name
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "FPS_Character")
-	FString CharacterName{ "" };
-
-    //** ActorClass to spawn
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "FPS_Character")
-	TSubclassOf<AActor> CompanionClass;
+	FString CharacterName = "";
 
 private:
-	UPROPERTY(EditAnywhere, Category = "FPS_Character")
-	TArray<AActor*> ActorsFound{ };
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "FPS_Character", meta = (AllowPrivateAccess = "true"))
+	UStaticMeshComponent* CompanionMesh; // Alternativamente TObjectPtr<UStaticMeshComponent> e' un puntatore arricchito
 
-	UPROPERTY(EditAnywhere, Category = "FPS_Character")
-	AActor* ClosestActor{ };
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "FPS_Character", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UCPP_FPS_InteractionComponent> InteractionComponent; // UCPP_FPS_InteractionComponent*
 
 protected:
 	// Called when the game starts or when spawned
@@ -56,7 +39,5 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	// Interaction Trace Objects
-	UFUNCTION(BluePrintCallable, Category = "FPS_Character")
-	TArray<AActor*> InteractionTraceObjects(const float Distance, const float Radius);
+	virtual void OnContruction();
 };

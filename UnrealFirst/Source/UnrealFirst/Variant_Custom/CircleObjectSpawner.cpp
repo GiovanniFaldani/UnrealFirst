@@ -2,6 +2,8 @@
 
 
 #include "Variant_Custom/CircleObjectSpawner.h"
+#include "Math/UnrealMathUtility.h"
+#include "CPP_Basic_Actor.h"
 
 // Sets default values for this component's properties
 UCircleObjectSpawner::UCircleObjectSpawner()
@@ -20,7 +22,9 @@ void UCircleObjectSpawner::BeginPlay()
 	Super::BeginPlay();
 
 	// set center
-	Center = GetOwner()->GetActorLocation();	
+	Center = GetOwner()->GetActorLocation();
+
+	Spawn();
 }
 
 
@@ -32,14 +36,40 @@ void UCircleObjectSpawner::TickComponent(float DeltaTime, ELevelTick TickType, F
 	// ...
 }
 
-void UCircleObjectSpawner::Spawn(AActor* ToSpawn) {
+void UCircleObjectSpawner::Spawn() {
 
-	// TODO set spawn angles based on item number
+	// set spawn angles based on item number
+
+	float AngleIncrease{ 360.0f / ItemNumber };
 
 	for (int i = 0; i < ItemNumber; i++) {
-		//GetWorld()->SpawnActor( // Actor spawning function
 
-		//);
+		FVector Offset = FVector(1.0f, 0.0f, 0.0f).RotateAngleAxis(i * AngleIncrease, FVector(.0f, .0f, 1.0f));
+
+		//UE_LOG(LogTemp, Warning, TEXT("Vector offset: %f, %f, %f\n"), Offset.X, Offset.Y, Offset.Z);
+
+		FVector SpawnLocation{ Center + Radius * Offset};
+
+		FVector SpawnScale{ FVector(1.0f, 1.0f, 1.0f) };
+
+		FRotator SpawnRotation{ FRotator(.0f, .0f, .0f) };
+
+		FTransform SpawnTransform{ };
+
+		SpawnTransform.SetLocation(SpawnLocation);
+		SpawnTransform.SetRotation(SpawnRotation.Quaternion());
+		SpawnTransform.SetScale3D(SpawnScale);
+
+		FActorSpawnParameters SpawnParams{ };
+
+		SpawnParams.Owner = GetOwner();
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+		GetWorld()->SpawnActor<AActor>( // Actor spawning function
+			ToSpawn,
+			SpawnTransform,
+			SpawnParams
+		);
 
 	}
 }

@@ -22,8 +22,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "CircleSpawner")
 	int ItemNumber;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "CircleSpawner")
+	TSubclassOf<AActor> ToSpawn;
+
 private:
-	UPROPERTY(Category = "CircleSpawner")
+	UPROPERTY(EditANywhere, Category = "CircleSpawner")
 	FVector Center;
 
 protected:
@@ -34,5 +37,5 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void Spawn(AActor* ToSpawn);
+	void Spawn();
 };
