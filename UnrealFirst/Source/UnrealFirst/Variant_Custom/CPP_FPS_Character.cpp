@@ -58,6 +58,19 @@ void ACPP_FPS_Character::OnContruction()
 
 }
 
+AActor* ACPP_FPS_Character::GetCompanion()
+{
+	if (!IsValid(SpawnedCompanionActor))
+	{
+		return nullptr;
+	}
+
+	FVector Location;
+	Location = SpawnedCompanionActor->GetActorLocation();
+
+	return SpawnedCompanionActor;
+}
+
 
 
 

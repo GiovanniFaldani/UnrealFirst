@@ -18,7 +18,8 @@ public class UnrealFirst : ModuleRules
 			"StateTreeModule",
 			"GameplayStateTreeModule",
 			"UMG",
-			"Slate"
+			"Slate",
+			"CommonUI"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });

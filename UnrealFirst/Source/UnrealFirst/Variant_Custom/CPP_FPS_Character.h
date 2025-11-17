@@ -28,6 +28,9 @@ private:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "FPS_Character", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCPP_FPS_InteractionComponent> InteractionComponent; // UCPP_FPS_InteractionComponent*
 
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "FPS_Character", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<AActor> SpawnedCompanionActor;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -40,4 +43,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual void OnContruction();
+
+	UFUNCTION()
+	AActor* GetCompanion();
 };
